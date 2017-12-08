@@ -14,7 +14,6 @@ This module requires the following modules:
 
 * [Advertising Entity](https://www.drupal.org/project/ad_entity)
 
-
 Installation
 ------------
 
@@ -24,4 +23,3 @@ This module can be installed and enabled like any other Drupal module. However,
    ```sh
    composer require drupal/inline_ad_entity:^1.0
    ```
-

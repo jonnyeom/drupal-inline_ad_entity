@@ -167,7 +167,7 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
   }
 
   /**
-   * Splits a string ($value) into an array every n ($frequency) instances of a given $deliminator.
+   * Splits markup into an array every n instances for a given deliminator.
    *
    * @param string $value
    *   The string of text/markup to be split.
