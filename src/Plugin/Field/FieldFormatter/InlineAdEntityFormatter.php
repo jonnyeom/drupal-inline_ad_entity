@@ -182,8 +182,20 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
   private function splitValue($value, $frequency, $deliminator = '</p>') {
     $clumps = [];
     $exploded = explode($deliminator, $value);
-    $clumpIndex = 0;
 
+    // Append the deliminator back onto each chunk.
+    $count = count($exploded);
+    foreach ($exploded as &$chunk) {
+      if (--$count <= 0) {
+        // Do not append deliminator to last element.
+        break;
+      }
+      $chunk = $chunk . $deliminator;
+    }
+    unset($chunk);
+
+    // Group by frequency.
+    $clumpIndex = 0;
     foreach ($exploded as $position => $piece) {
       if ($position % $frequency === 0) {
         $clumpIndex++;
