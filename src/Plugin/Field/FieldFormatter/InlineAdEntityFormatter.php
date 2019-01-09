@@ -99,7 +99,7 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
   public function settingsSummary() {
     $summary = [];
 
-    $summary[] = t('Ads Ad Entity ads into content.');
+    $summary[] = $this->t('Ads Ad Entity ads into content.');
 
     return $summary;
   }
@@ -119,13 +119,13 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['ad_frequency'] = [
-      '#title' => t('Ad Frequency'),
+      '#title' => $this->t('Ad Frequency'),
       '#type' => 'number',
       '#default_value' => $this->getSetting('ad_frequency'),
     ];
 
     $element['ad_display'] = [
-      '#title' => t('Ad Display'),
+      '#title' => $this->t('Ad Display'),
       '#type' => 'select',
       '#default_value' => $this->getSetting('ad_display'),
       '#options' => $this->getAdDisplayOptions(),
