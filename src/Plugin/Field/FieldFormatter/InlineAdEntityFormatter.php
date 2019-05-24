@@ -199,6 +199,7 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
         continue;
       }
 
+      // Append the last item if not appended yet.
       if ($key + 1 === $elem->childNodes->length) {
         $children[] = $child;
       }
