@@ -2,6 +2,7 @@
 
 namespace Drupal\inline_ad_entity\Plugin\Field\FieldFormatter;
 
+use Masterminds\HTML5;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -181,22 +182,30 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
    */
   private function splitValue($value, $frequency, $deliminator = '</p>') {
     $clumps = [];
-    $exploded = explode($deliminator, $value);
 
-    // Append the deliminator back onto each chunk.
-    $count = count($exploded);
-    foreach ($exploded as &$chunk) {
-      if (--$count <= 0) {
-        // Do not append deliminator to last element.
-        break;
+    // Parse the document. $dom is a DOMDocument.
+    $html5 = new HTML5();
+    $dom = $html5->loadHTML($value);
+    $elem = $dom->documentElement;
+    $children = [];
+    $child = '';
+    foreach ($elem->childNodes as $key => $childNode) {
+      $child .= $html5->saveHTML($childNode);
+
+      if ($childNode->nodeType === 1 && $childNode->tagName === 'p') {
+        $children[] = $child;
+        $child = '';
+        continue;
       }
-      $chunk = $chunk . $deliminator;
+
+      if ($key + 1 === $elem->childNodes->length) {
+        $children[] = $child;
+      }
     }
-    unset($chunk);
 
     // Group by frequency.
     $clumpIndex = 0;
-    foreach ($exploded as $position => $piece) {
+    foreach ($children as $position => $piece) {
       if ($position % $frequency === 0) {
         $clumpIndex++;
         $clumps[$clumpIndex] = $piece;
