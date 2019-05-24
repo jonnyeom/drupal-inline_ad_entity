@@ -174,14 +174,15 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
    *   The string of text/markup to be split.
    * @param int $frequency
    *   The number of instances of the given deliminator.
-   * @param string $deliminator
-   *   The string value to split on (defaults to '</p>').
+   * @param string $deliminator_tags
+   *   Html tags to use as deliminators, comma separated (defaults to 'p').
    *
    * @return array
    *   An exploded array of the string's split portions
    */
-  private function splitValue($value, $frequency, $deliminator = '</p>') {
+  private function splitValue($value, $frequency, $deliminator_tags = 'p') {
     $clumps = [];
+    $deliminator_tags = explode(',', strtolower(str_replace(' ', '', $deliminator_tags)));
 
     // Parse the document. $dom is a DOMDocument.
     $html5 = new HTML5();
@@ -192,7 +193,7 @@ class InlineAdEntityFormatter extends FormatterBase implements ContainerFactoryP
     foreach ($elem->childNodes as $key => $childNode) {
       $child .= $html5->saveHTML($childNode);
 
-      if ($childNode->nodeType === 1 && $childNode->tagName === 'p') {
+      if ($childNode->nodeType === 1 && in_array($childNode->tagName, $deliminator_tags, TRUE)) {
         $children[] = $child;
         $child = '';
         continue;
